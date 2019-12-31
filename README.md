@@ -41,10 +41,10 @@ $ cd datasets && python div2h5.py
 We provide the pretrained models in `checkpoint` directory. To test CARN on benchmark dataset:
 ```shell
 $ python carn/sample.py --model carn \
-                        --test_data_dir dataset/<dataset> \
+                        --test_data_dir FULL_PATH_OF_TEST_FOLDER \
                         --scale [2|3|4] \
-                        --ckpt_path ./checkpoint/<path>.pth \
-                        --sample_dir <sample_dir>
+                        --ckpt_path FULL_PATH_OF_PTH \
+                        --sample_dir FULL_PATH_OF_SAMPLE_DIR
 ```
 and for CARN-M,
 ```shell

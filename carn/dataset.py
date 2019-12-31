@@ -77,7 +77,7 @@ class TestDataset(data.Dataset):
     def __init__(self, dirname, scale):
         super(TestDataset, self).__init__()
 
-        self.name  = dirname.split("/")[-1]
+        self.name = dirname.split("/")[-1]
         self.scale = scale
         
         if "DIV" in self.name:
@@ -85,26 +85,30 @@ class TestDataset(data.Dataset):
             self.lr = glob.glob(os.path.join("{}_LR_bicubic".format(dirname), 
                                              "X{}/*.png".format(scale)))
         else:
-            all_files = glob.glob(os.path.join(dirname, "x{}/*.png".format(scale)))
-            self.hr = [name for name in all_files if "HR" in name]
-            self.lr = [name for name in all_files if "LR" in name]
+            # all_files = glob.glob(os.path.join(dirname, "x{}/*.png".format(scale)))
+            if  not dirname.endswith('/'):
+                dirname = dirname + '/'
+            all_files = glob.glob('{}*png'.format(dirname))
+            self.lr = all_files
+            # self.hr = [name for name in all_files if "HR" in name]
+            # self.lr = [name for name in all_files if "LR" in name]
 
-        self.hr.sort()
-        self.lr.sort()
+        # self.hr.sort()
+        # self.lr.sort()
 
         self.transform = transforms.Compose([
             transforms.ToTensor()
         ])
 
     def __getitem__(self, index):
-        hr = Image.open(self.hr[index])
+        # hr = Image.open(self.hr[index])
         lr = Image.open(self.lr[index])
 
-        hr = hr.convert("RGB")
+        # hr = hr.convert("RGB")
         lr = lr.convert("RGB")
-        filename = self.hr[index].split("/")[-1]
+        filename = self.lr[index].split("/")[-1]
 
-        return self.transform(hr), self.transform(lr), filename
+        return self.transform(lr), filename
 
     def __len__(self):
-        return len(self.hr)
+        return len(self.lr)

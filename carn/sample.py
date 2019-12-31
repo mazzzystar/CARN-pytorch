@@ -34,7 +34,7 @@ def save_image(tensor, filename):
 
 def sample(net, device, dataset, cfg):
     scale = cfg.scale
-    for step, (hr, lr, name) in enumerate(dataset):
+    for step, (lr, name) in enumerate(dataset):
         if "DIV2K" in dataset.name:
             t1 = time.time()
             h, w = lr.size()[1:]
@@ -73,20 +73,20 @@ def sample(net, device, dataset, cfg):
                               cfg.test_data_dir.split("/")[-1],
                               "x{}".format(cfg.scale),
                               "SR")
-        hr_dir = os.path.join(cfg.sample_dir,
-                              model_name, 
-                              cfg.test_data_dir.split("/")[-1],
-                              "x{}".format(cfg.scale),
-                              "HR")
+        # hr_dir = os.path.join(cfg.sample_dir,
+        #                       model_name,
+        #                       cfg.test_data_dir.split("/")[-1],
+        #                       "x{}".format(cfg.scale),
+        #                       "HR")
         
         os.makedirs(sr_dir, exist_ok=True)
-        os.makedirs(hr_dir, exist_ok=True)
+        # os.makedirs(hr_dir, exist_ok=True)
 
-        sr_im_path = os.path.join(sr_dir, "{}".format(name.replace("HR", "SR")))
-        hr_im_path = os.path.join(hr_dir, "{}".format(name))
+        sr_im_path = os.path.join(sr_dir, "SR_{}".format(name))
+        # hr_im_path = os.path.join(hr_dir, "{}".format(name))
 
         save_image(sr, sr_im_path)
-        save_image(hr, hr_im_path)
+        # save_image(hr, hr_im_path)
         print("Saved {} ({}x{} -> {}x{}, {:.3f}s)"
             .format(sr_im_path, lr.shape[1], lr.shape[2], sr.shape[1], sr.shape[2], t2-t1))
 
